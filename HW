@@ -1,0 +1,48 @@
+import sympy as sp
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Определение переменной
+x = sp.symbols('x')
+
+# Определение функции
+f = -12*x**4*sp.sin(sp.cos(x)) - 18*x**3 + 5*x**2 + 10*x - 30
+
+# 1. Определение корней
+roots = sp.solve(f, x)
+print("Корни функции:", roots)
+
+# 2. Интервалы, на которых функция возрастает
+increasing_intervals = sp.solve(sp.diff(f, x) > 0, x)
+print("Интервалы, на которых функция возрастает:", increasing_intervals)
+
+# 3. Интервалы, на которых функция убывает
+decreasing_intervals = sp.solve(sp.diff(f, x) < 0, x)
+print("Интервалы, на которых функция убывает:", decreasing_intervals)
+
+# 4. Построение графика
+f_lambda = sp.lambdify(x, f, 'numpy')
+x_vals = np.linspace(-10, 10, 400)
+y_vals = f_lambda(x_vals)
+
+plt.plot(x_vals, y_vals, label='f(x)')
+plt.axhline(0, color='black', linewidth=0.5, linestyle='--')
+plt.axvline(0, color='black', linewidth=0.5, linestyle='--')
+plt.legend()
+plt.title('График функции f(x)')
+plt.xlabel('x')
+plt.ylabel('f(x)')
+plt.show()
+
+# 5. Вычисление вершины
+critical_points = sp.solve(sp.diff(f, x), x)
+vertex = [(point, f.subs(x, point)) for point in critical_points]
+print("Вершина функции:", vertex)
+
+# 6. Определение промежутков, на которых f > 0
+positive_intervals = sp.solve_univariate_inequality(f > 0, x)
+print("Промежутки, на которых f > 0:", positive_intervals)
+
+# 7. Определение промежутков, на которых f < 0
+negative_intervals = sp.solve_univariate_inequality(f < 0, x)
+print("Промежутки, на которых f < 0:", negative_intervals)
